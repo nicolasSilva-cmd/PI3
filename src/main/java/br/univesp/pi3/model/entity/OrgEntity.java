@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -29,6 +31,6 @@ public class OrgEntity {
 
     @OneToMany(mappedBy = "org")
     @JsonManagedReference
-    private List<ClienteEntity> clientId;
+    private List<ClienteEntity> clienteId;
 
 }
