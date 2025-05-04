@@ -85,10 +85,17 @@
             <artifactId>spring-boot-devtools</artifactId>
             <version>3.4.4</version>
         </dependency>
-
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -100,33 +107,9 @@
                             <artifactId>lombok</artifactId>
                         </path>
                         <path>
-                            <dependency>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>1.6.3</version>
-                            </dependency>
-                        </path>
-                        <path>
-                            <dependency>
-                                <groupId>org.jacoco</groupId>
-                                <artifactId>jacoco-maven-plugin</artifactId>
-                                <version>0.8.13</version>
-                                <executions>
-                                    <execution>
-                                        <goals>
-                                            <goal>prepare-agent</goal>
-                                        </goals>
-                                    </execution>
-                                    <execution>
-                                        <id>report</id>
-                                        <phase>prepare-package</phase>
-                                        <goals>
-                                            <goal>report</goal>
-                                        </goals>
-                                    </execution>
-                                </executions>
-
-                            </dependency>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.6.3</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -140,6 +123,53 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>90%</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>br/univesp/pi3/exception/**</exclude>
+                        <exclude>br/univesp/pi3/controller/**</exclude>
+                        <exclude>br/univesp/pi3/model/**</exclude>
+                        <exclude>br/univesp/pi3/repository/**</exclude>
+                        <exclude>br/univesp/pi3/util/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
