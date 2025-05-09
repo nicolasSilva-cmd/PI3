@@ -1,17 +1,19 @@
 package br.univesp.pi3.service;
 
+import br.univesp.pi3.exception.ValidationException;
 import br.univesp.pi3.model.dto.OrgDTO;
 import br.univesp.pi3.model.dto.UpdateOrgDTO;
 import br.univesp.pi3.model.entity.OrgEntity;
 import br.univesp.pi3.model.mapper.OrgMapper;
 import br.univesp.pi3.repository.OrgRepository;
-import jakarta.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @ApplicationScope
@@ -45,7 +47,7 @@ public class OrgService {
 
     public ResponseEntity<OrgDTO> updateOrg(Long id, UpdateOrgDTO dto) {
         OrgEntity entity = repository.getReferenceById(id);
-        if (entity != null) {
+        if (!Objects.isNull(entity)) {
             entity.setNome(dto.getNome());
             entity.setEmail(dto.getEmail());
             entity.setVagasDisponiveis(dto.getVagasDisponiveis());

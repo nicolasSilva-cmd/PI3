@@ -1,5 +1,6 @@
 package br.univesp.pi3.service;
 
+import br.univesp.pi3.exception.ValidationException;
 import br.univesp.pi3.model.Status;
 import br.univesp.pi3.model.dto.ClienteDTO;
 import br.univesp.pi3.model.dto.OrgDTO;
@@ -10,12 +11,12 @@ import br.univesp.pi3.model.mapper.OrgMapper;
 import br.univesp.pi3.repository.ClienteRepository;
 import br.univesp.pi3.repository.OrgRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,7 +44,7 @@ public class ReservaService {
         Optional<OrgEntity> orgEntityOptional = orgRepository.findById(id);
         OrgDTO orgDTO = (orgEntityOptional.isPresent()) ? orgMapper.toDto(orgEntityOptional.get()) : null;
 
-        if (!orgDTO.equals(null)) {
+        if (!Objects.isNull(orgDTO)) {
             ClienteDTO clienteDTO = createCliente(orgDTO);
 
             orgDTO.getClientId().add(clienteMapper.map(clienteDTO));
@@ -63,8 +64,8 @@ public class ReservaService {
     public ResponseEntity<String> deleteAgendamento(Long orgId, Long clienteId) {
         ClienteEntity clienteEntity = clienteRepository.getReferenceById(clienteId);
         OrgEntity orgEntity = orgRepository.getReferenceById(orgId);
-        if (clienteEntity != null && orgEntity != null) {
-            orgEntity.getClienteId().remove(orgEntity.getClienteId().contains(clienteEntity));
+        if (!Objects.isNull(clienteEntity) && !Objects.isNull(orgEntity)) {
+            orgEntity.getClienteId().remove(clienteEntity);
             orgEntity.setVagasDisponiveis(orgEntity.getVagasDisponiveis() + 1);
             orgEntity.setVagasReservadas(orgEntity.getVagasReservadas() - 1);
 
@@ -101,7 +102,7 @@ public class ReservaService {
 
     private ClienteDTO queue(OrgDTO dto) {
         ClienteEntity entity = clienteRepository.findFirstByStatusAndOrg(Status.AGUARDANDO.getStatus(), orgMapper.toEntity(dto));
-        if (!entity.equals(null)) {
+        if (!Objects.isNull(entity)) {
             entity.setStatus(Status.AGENDADO.getStatus());
             clienteRepository.save(entity);
         }
