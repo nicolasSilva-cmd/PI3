@@ -24,23 +24,21 @@ import java.util.*;
 @Service
 public class ReservaService {
 
-    private final OrgRepository orgRepository;
+    @Autowired
+    OrgRepository orgRepository;
 
-    private final ClienteRepository clienteRepository;
+    @Autowired
+    ClienteRepository clienteRepository;
 
-    private final EmailService emailService;
+    @Autowired
+    EmailService emailService;
 
-    private final OrgMapper orgMapper;
+    @Autowired
+    OrgMapper orgMapper;
 
-    private final ClienteMapper clienteMapper;
+    @Autowired
+    ClienteMapper clienteMapper;
 
-    public ReservaService(OrgRepository orgRepository, ClienteRepository clienteRepository, EmailService emailService, OrgMapper orgMapper, ClienteMapper clienteMapper) {
-        this.orgRepository = orgRepository;
-        this.clienteRepository = clienteRepository;
-        this.emailService = emailService;
-        this.orgMapper = orgMapper;
-        this.clienteMapper = clienteMapper;
-    }
 
     @Transactional
     public OrgDTO createReserva(Long id) {

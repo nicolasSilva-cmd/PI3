@@ -7,6 +7,7 @@ import br.univesp.pi3.model.entity.OrgEntity;
 import br.univesp.pi3.model.mapper.OrgMapper;
 import br.univesp.pi3.repository.OrgRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,15 @@ import java.util.Objects;
 @ApplicationScope
 public class OrgService {
 
-    private final OrgRepository repository;
+    @Autowired
+    OrgRepository repository;
 
-    @Qualifier("orgMapper")
-    private final OrgMapper mapper;
+    @Autowired
+    OrgMapper mapper;
 
-    public List<OrgDTO> listAll() {
-        return mapper.toDtoList(repository.findAll());
-
+    public ResponseEntity<List<OrgDTO>> listAll() {
+        List<OrgDTO> dto = mapper.toDtoList(repository.findAll());
+        return ResponseEntity.ok(dto);
     }
 
     public ResponseEntity<OrgDTO> getById(Long id) {

@@ -12,7 +12,6 @@ import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @ApplicationScope
 public class ClienteService {
