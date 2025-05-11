@@ -6,8 +6,8 @@ import br.univesp.pi3.model.dto.UpdateOrgDTO;
 import br.univesp.pi3.model.entity.OrgEntity;
 import br.univesp.pi3.model.mapper.OrgMapper;
 import br.univesp.pi3.repository.OrgRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.ApplicationScope;
@@ -16,18 +16,18 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 @ApplicationScope
 public class OrgService {
 
-    @Autowired
-    OrgRepository repository;
+    private final OrgRepository repository;
 
-    @Autowired
-    OrgMapper mapper;
+    @Qualifier("orgMapper")
+    private final OrgMapper mapper;
 
-    public ResponseEntity<List<OrgDTO>> listAll() {
-        List<OrgDTO> list = mapper.toDtoList(repository.findAll());
-        return ResponseEntity.ok(list);
+    public List<OrgDTO> listAll() {
+        return mapper.toDtoList(repository.findAll());
+
     }
 
     public ResponseEntity<OrgDTO> getById(Long id) {
@@ -59,6 +59,12 @@ public class OrgService {
         }
     }
 
+    public List<OrgDTO> findByNome(String nome) {
+        List<OrgEntity> orgs = repository.findByNomeContainingIgnoreCase(nome);
+        return mapper.toDtoList(orgs);
+    }
+
+
     private void validationSet(OrgDTO dto) {
         if (repository.countAllByNomeContainingAndAgendaContaining(dto.getNome(), dto.getAgenda()) > 0) {
             throw new ValidationException("Deve existir somente uma organização com esse nome e período disponível.");
@@ -66,4 +72,6 @@ public class OrgService {
             throw new ValidationException("E-mail inválido. Insira um e-mail válido");
         }
     }
+
+
 }

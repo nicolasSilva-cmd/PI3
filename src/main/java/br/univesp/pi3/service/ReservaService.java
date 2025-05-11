@@ -11,33 +11,36 @@ import br.univesp.pi3.model.mapper.OrgMapper;
 import br.univesp.pi3.repository.ClienteRepository;
 import br.univesp.pi3.repository.OrgRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
 public class ReservaService {
 
-    @Autowired
-    OrgRepository orgRepository;
+    private final OrgRepository orgRepository;
 
-    @Autowired
-    ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
 
-    @Autowired
-    EmailService emailService;
+    private final EmailService emailService;
 
-    @Autowired
-    OrgMapper orgMapper;
+    private final OrgMapper orgMapper;
 
-    @Autowired
-    ClienteMapper clienteMapper;
+    private final ClienteMapper clienteMapper;
+
+    public ReservaService(OrgRepository orgRepository, ClienteRepository clienteRepository, EmailService emailService, OrgMapper orgMapper, ClienteMapper clienteMapper) {
+        this.orgRepository = orgRepository;
+        this.clienteRepository = clienteRepository;
+        this.emailService = emailService;
+        this.orgMapper = orgMapper;
+        this.clienteMapper = clienteMapper;
+    }
 
     @Transactional
     public OrgDTO createReserva(Long id) {
@@ -47,7 +50,13 @@ public class ReservaService {
         if (!Objects.isNull(orgDTO)) {
             ClienteDTO clienteDTO = createCliente(orgDTO);
 
-            orgDTO.getClientId().add(clienteMapper.map(clienteDTO));
+            if(orgDTO.getClienteId() == null) {
+                List<ClienteEntity> list = new ArrayList<>();
+                list.add(clienteMapper.map(clienteDTO));
+                orgDTO.setClienteId(list);
+            } else {
+                orgDTO.getClienteId().add(clienteMapper.map(clienteDTO));
+            }
             if (orgDTO.getVagasDisponiveis() != 0) {
                 orgDTO.setVagasDisponiveis(orgDTO.getVagasDisponiveis() - 1);
                 orgDTO.setVagasReservadas(orgDTO.getVagasReservadas() + 1);

@@ -12,13 +12,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/org")
+@CrossOrigin(origins = "*")
 public class OrgController {
 
     @Autowired
     private OrgService service;
 
     @GetMapping
-    public ResponseEntity<List<OrgDTO>> listAll() {
+    public  List<OrgDTO> listAll() {
         return service.listAll();
     }
 
@@ -36,5 +37,10 @@ public class OrgController {
     public ResponseEntity<OrgDTO> updateOrg(@PathVariable("id") Long id,
                                             @RequestBody UpdateOrgDTO updateDTO) {
         return service.updateOrg(id, updateDTO);
+    }
+
+    @GetMapping("/find_nome/{nome}")
+    public List<OrgDTO> getByNome(@PathVariable("nome") String nome) {
+        return service.findByNome(nome);
     }
 }

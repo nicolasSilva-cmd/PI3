@@ -170,7 +170,7 @@
                         <exclude>br/univesp/pi3/controller/**</exclude>
                         <exclude>br/univesp/pi3/model/**</exclude>
                         <exclude>br/univesp/pi3/repository/**</exclude>
-                        <exclude>br/univesp/pi3/util/**</exclude>
+                        <exclude>br/univesp/pi3/Pi3Application.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

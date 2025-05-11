@@ -29,7 +29,7 @@ public class OrgEntity {
 
     private Long vagasDisponiveis;
 
-    private Long VagasReservadas;
+    private Long vagasReservadas;
 
     @OneToMany(mappedBy = "org")
     @JsonManagedReference

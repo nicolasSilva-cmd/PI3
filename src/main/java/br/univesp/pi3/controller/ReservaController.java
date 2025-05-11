@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/reserva")
+@CrossOrigin(origins = "*")
 public class ReservaController {
 
     @Autowired

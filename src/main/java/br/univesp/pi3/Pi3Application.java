@@ -1,4 +1,4 @@
-package br.univesp.pi3.util;
+package br.univesp.pi3;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
