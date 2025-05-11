@@ -1,6 +1,7 @@
 package br.univesp.pi3.service;
 
 import br.univesp.pi3.exception.ValidationException;
+import br.univesp.pi3.model.dto.OrgDTO;
 import br.univesp.pi3.model.entity.OrgEntity;
 import br.univesp.pi3.model.mapper.ClienteMapper;
 import br.univesp.pi3.model.mapper.OrgMapper;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +53,22 @@ class ReservaServiceTest {
         when(orgRepository.findById(anyLong())).thenReturn(Optional.of(getOrgEntity()));
         when(orgMapper.toDto(getOrgEntity())).thenReturn(getOrgDTO());
         when(orgMapper.toEntity(getOrgDTO())).thenReturn(getOrgEntity());
+
+        reservaService.createReserva(1l);
+
+        verify(orgRepository, atLeastOnce()).save(any());
+        verify(emailService, atLeastOnce()).sendMail(any(), any());
+    }
+
+    @Test
+    void shouldSucessfullyCreateReservaWithEmptyClientList() {
+
+        OrgDTO dto = getOrgDTO();
+        dto.setClienteId(null);
+
+        when(orgRepository.findById(anyLong())).thenReturn(Optional.of(getOrgEntity()));
+        when(orgMapper.toDto(getOrgEntity())).thenReturn(dto);
+        when(orgMapper.toEntity(dto)).thenReturn(getOrgEntity());
 
         reservaService.createReserva(1l);
 

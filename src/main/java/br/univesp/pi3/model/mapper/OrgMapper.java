@@ -3,10 +3,11 @@ package br.univesp.pi3.model.mapper;
 import br.univesp.pi3.model.dto.OrgDTO;
 import br.univesp.pi3.model.entity.OrgEntity;
 import org.mapstruct.Mapper;
+import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.util.List;
 
-@Mapper(componentModel="Spring")
+@Mapper(componentModel = "spring")
 public interface OrgMapper {
 
     OrgDTO toDto(OrgEntity entity);

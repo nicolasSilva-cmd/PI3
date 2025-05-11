@@ -28,23 +28,7 @@ public class OrgDTO {
 
     private Long vagasDisponiveis;
 
-    private Long VagasReservadas;
+    private Long vagasReservadas;
 
-    private List<ClienteEntity> clientId;
-
-    public void setNome(String nome) {
-        if(nome != null) this.nome = nome;
-    }
-
-    public void setEmail(String email) {
-        if(email != null) this.email = email;
-    }
-
-    public void setVagasReservadas(Long vagasReservadas) {
-        if(vagasReservadas != null) VagasReservadas = vagasReservadas;
-    }
-
-    public void setVagasDisponiveis(Long vagasDisponiveis) {
-        if(vagasDisponiveis != null) this.vagasDisponiveis = vagasDisponiveis;
-    }
+    private List<ClienteEntity> clienteId;
 }

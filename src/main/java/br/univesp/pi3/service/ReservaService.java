@@ -11,14 +11,14 @@ import br.univesp.pi3.model.mapper.OrgMapper;
 import br.univesp.pi3.repository.ClienteRepository;
 import br.univesp.pi3.repository.OrgRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -39,6 +39,7 @@ public class ReservaService {
     @Autowired
     ClienteMapper clienteMapper;
 
+
     @Transactional
     public OrgDTO createReserva(Long id) {
         Optional<OrgEntity> orgEntityOptional = orgRepository.findById(id);
@@ -47,7 +48,13 @@ public class ReservaService {
         if (!Objects.isNull(orgDTO)) {
             ClienteDTO clienteDTO = createCliente(orgDTO);
 
-            orgDTO.getClientId().add(clienteMapper.map(clienteDTO));
+            if(orgDTO.getClienteId() == null) {
+                List<ClienteEntity> list = new ArrayList<>();
+                list.add(clienteMapper.map(clienteDTO));
+                orgDTO.setClienteId(list);
+            } else {
+                orgDTO.getClienteId().add(clienteMapper.map(clienteDTO));
+            }
             if (orgDTO.getVagasDisponiveis() != 0) {
                 orgDTO.setVagasDisponiveis(orgDTO.getVagasDisponiveis() - 1);
                 orgDTO.setVagasReservadas(orgDTO.getVagasReservadas() + 1);

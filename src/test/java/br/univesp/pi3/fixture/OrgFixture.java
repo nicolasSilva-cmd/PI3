@@ -23,9 +23,9 @@ public class OrgFixture {
                 .nome("teste")
                 .email("teste@teste.com")
                 .agenda("2025-03-24")
-                .clientId(entities)
+                .clienteId(entities)
                 .vagasDisponiveis(10l)
-                .VagasReservadas(0l)
+                .vagasReservadas(0l)
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class OrgFixture {
                 .agenda("2025-03-24")
                 .clienteId(entities)
                 .vagasDisponiveis(10l)
-                .VagasReservadas(0l)
+                .vagasReservadas(0l)
                 .build();
 
     }

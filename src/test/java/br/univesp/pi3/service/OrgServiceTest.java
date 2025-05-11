@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -126,5 +127,17 @@ class OrgServiceTest {
 
         assertThrows(ValidationException.class, () -> service.updateOrg(1l, updateOrgDTO));
 
+    }
+
+    @Test
+    void shouldFindNome() {
+
+        when(repository.findByNomeContainingIgnoreCase(anyString())).thenReturn(List.of(getOrgEntity()));
+        when(mapper.toDtoList(anyList())).thenReturn(List.of(getOrgDTO()));
+
+        service.findByNome("teste");
+
+        verify(repository, atLeastOnce()).findByNomeContainingIgnoreCase(anyString());
+        verify(mapper, atLeastOnce()).toDtoList(anyList());
     }
 }

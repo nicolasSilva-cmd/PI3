@@ -3,6 +3,7 @@ package br.univesp.pi3.controller;
 import br.univesp.pi3.model.dto.OrgDTO;
 import br.univesp.pi3.model.dto.UpdateOrgDTO;
 import br.univesp.pi3.service.OrgService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,29 +13,39 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/org")
+@CrossOrigin(origins = "*")
 public class OrgController {
 
     @Autowired
     private OrgService service;
 
     @GetMapping
+    @Transactional
     public ResponseEntity<List<OrgDTO>> listAll() {
         return service.listAll();
     }
 
     @GetMapping("/{id}")
+    @Transactional
     public ResponseEntity<OrgDTO> getById(@PathVariable("id") Long id) {
         return service.getById(id);
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<String> createOrg(@RequestBody @Valid OrgDTO dto) {
         return service.createOrg(dto);
     }
 
     @PatchMapping("/{id}")
+    @Transactional
     public ResponseEntity<OrgDTO> updateOrg(@PathVariable("id") Long id,
                                             @RequestBody UpdateOrgDTO updateDTO) {
         return service.updateOrg(id, updateDTO);
+    }
+
+    @GetMapping("/find_nome/{nome}")
+    public List<OrgDTO> getByNome(@PathVariable("nome") String nome) {
+        return service.findByNome(nome);
     }
 }
