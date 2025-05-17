@@ -23,13 +23,14 @@ public class EmailService {
         message.setFrom("emailsenderteste2@gmail.com");
         message.setTo(dto.getEmail());
         message.setSubject("Agendamento " + clienteDTO.getCodAgendamento() +", confirmado.");
-        message.setText("Agendamento com o cliente de ID " + clienteDTO.getClienteId() + "realizado às " + LocalDateTime.now());
+        message.setText("Agendamento com o cliente de ID " + clienteDTO.getClienteId() + " realizado às " + LocalDateTime.now());
         try {
             log.info("[E-MAIL SERVICE] - Enviando e-mail");
             mailSender.send(message);
             log.info("[E-MAIL SERVICE] - E-mail enviado com sucesso");
         } catch (MailException e) {
             log.error("[E-MAIL SERVICE] - Erro no envio do e-mail.");
+            e.printStackTrace();
         }
     }
 
